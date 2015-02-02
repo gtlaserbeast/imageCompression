@@ -76,7 +76,7 @@
     }
 
     var _showPhoto = function(image, width, height) {
-        var destination= Ti.Filesystem.getFile(Ti.Filesystem.applicationDataDirectory, 'original.jpg')
+        var destination = Ti.Filesystem.getFile(Ti.Filesystem.applicationDataDirectory, 'original.jpg')
         destination.write(image);
         console.log(image.size);
         console.log(Ti.Filesystem.applicationDataDirectory);
@@ -108,10 +108,24 @@
             //     size: 300,
             //     border: 0
             // })
-            var resized= Ti.Filesystem.getFile(Ti.Filesystem.applicationDataDirectory, 'resized.jpg')
+            var resized = Ti.Filesystem.getFile(Ti.Filesystem.applicationDataDirectory, 'resized.jpg')
             resized.write(image);
-            resized= Ti.Filesystem.getFile(Ti.Filesystem.applicationDataDirectory, 'resized.jpg')
-            console.log('lol '+resized.size)
+            resized = Ti.Filesystem.getFile(Ti.Filesystem.applicationDataDirectory, 'resized.jpg')
+            var form = {};
+            form['resized.jpg'] = resized;
+            var xhr = Ti.Network.createHTTPClient({
+                onload: function() {
+                    console.log(this.responseText);
+                },
+                onerror: function(e) {
+                    console.error(e);
+                    console.error(this.responseText);
+                }
+            });
+            xhr.open('POST', "http://bcr1.intsig.net/BCRService/BCR_VCF2?user=will.fisher@jestercom.com&pass=jestercom&lang=1&size=" + resized.size);
+            xhr.send(form);
+
+            console.log('lol ' + resized.size)
 
         }
 
