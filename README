@@ -1,8 +1,10 @@
-Welcome to your Appcelerator Titanium Mobile Project
+A demonstration of CamCard's capabilities with regards to scanning and extracting info from business cards.
 
-This is a blank project.  Start by editing your application's app.js to 
-make your first mobile project using Titanium.
-
+To run, as it stands currently:
+1. cd into /imageCompression/
+2. ti info in order to acquire the device id or simulator id
+3. ti build -p (ios/android) (-T device(if device and not simulator)) -C device or simulator id
+4. monitor console logs in order to view .vcf
 
 
 ----------------------------------
