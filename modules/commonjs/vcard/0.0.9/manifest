@@ -1,0 +1,10 @@
+version: 0.0.9
+description: parse vCard into JSON
+author: Jasper Lievisse Adriaanse <jasper@humppa.nl>
+license: MIT/X11
+copyright: Copyright © 2015 Jasper Lievisse Adriaanse
+name: vcard
+moduleid: vcard
+guid: 946f6eea-6afd-0508-0854-518c1150dc3b
+platform: commonjs
+minsdk: 3.2.0.GA

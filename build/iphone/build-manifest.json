@@ -1,8 +1,9 @@
 {
-	"target": "simulator",
-	"deployType": "development",
+	"target": "device",
+	"deployType": "test",
 	"iosSdkVersion": "8.1",
 	"deviceFamily": "universal",
+	"developerName": "Jared  Jester (8S97AZ82C8)",
 	"iosSdkPath": "/Users/will/Library/Application Support/Titanium/mobilesdk/osx/3.5.0.GA/iphone",
 	"tiCoreHash": "47658db9e85e6b4af144b3d6070d6de0",
 	"modulesHash": "268d023d0c115d1d0b75424388c7d2de",
@@ -20,5 +21,5 @@
 	"skipJSMinification": false,
 	"forceCopy": false,
 	"forceCopyAll": false,
-	"encryptJS": false
+	"encryptJS": true
 }

@@ -1,0 +1,8 @@
+"/Users/will/jcom/imageCompression/build/android/gen/android/support/v7/appcompat/R.java"
+"/Users/will/jcom/imageCompression/build/android/gen/ti/imagefactory/ApplicationStylesheet.java"
+"/Users/will/jcom/imageCompression/build/android/gen/ti/imagefactory/AssetCryptImpl.java"
+"/Users/will/jcom/imageCompression/build/android/gen/ti/imagefactory/R.java"
+"/Users/will/jcom/imageCompression/build/android/gen/ti/imagefactory/TiImagefactoryActivity.java"
+"/Users/will/jcom/imageCompression/build/android/gen/ti/imagefactory/TiImagefactoryAppInfo.java"
+"/Users/will/jcom/imageCompression/build/android/gen/ti/imagefactory/TiImagefactoryApplication.java"
+"/Users/will/jcom/imageCompression/build/android/gen/ti/modules/titanium/ui/R.java"

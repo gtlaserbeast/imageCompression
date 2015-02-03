@@ -1,90 +1,153 @@
-var window = Ti.UI.createWindow({
-    backgroundColor: 'white'
-});
+(function() {
 
-var imageView = Titanium.UI.createImageView({
-    image: 'images/flower.jpg',
-    top: 4,
-    left: 4,
-    width: Ti.UI.SIZE || 'auto',
-    height: Ti.UI.SIZE || 'auto'
-});
+    var ImageFactory = require('ti.imagefactory');
 
-window.add(imageView);
-
-var btnTransform = Titanium.UI.createButton({
-    title: 'Next', zIndex: 1,
-    bottom: 4, left: 4,
-    width: '40%', height: 60
-});
-window.add(btnTransform);
-
-var btnSave = Titanium.UI.createButton({
-    title: 'Save', zIndex: 1,
-    right: 4, bottom: 4,
-    width: '40%', height: 60
-});
-window.add(btnSave);
-
-var imageViewTransformed = Titanium.UI.createImageView({
-    top: 221,
-    left: 4,
-    width: Ti.UI.SIZE || 'auto',
-    height: Ti.UI.SIZE || 'auto'
-});
-
-window.add(imageViewTransformed);
-window.open();
-
-var ImageFactory = require('ti.imagefactory');
-
-var f = Ti.Filesystem.getFile(Ti.Filesystem.resourcesDirectory, 'images', 'flower.jpg');
-var blob = f.read();
-imageViewTransformed.image = blob;
-var type = 0;
-
-btnTransform.addEventListener('click', function (e) {
-    switch (type) {
-        case 0:
-            newBlob = ImageFactory.imageWithAlpha(blob, { format: ImageFactory.PNG });
-            break;
-        case 1:
-            newBlob = ImageFactory.imageWithTransparentBorder(blob, { borderSize: 10, format: ImageFactory.PNG });
-            break;
-        case 2:
-            newBlob = ImageFactory.imageWithRoundedCorner(blob, { borderSize: 4, cornerRadius: 8, format: ImageFactory.PNG });
-            break;
-        case 3:
-            newBlob = ImageFactory.imageAsThumbnail(blob, {size: 64, borderSize: 5, cornerRadius: 10, format: ImageFactory.PNG });
-            break;
-        case 4:
-            newBlob = ImageFactory.imageAsResized(blob, { width: 140, height: 140 });
-            break;
-        case 5:
-            newBlob = ImageFactory.imageAsCropped(blob, { width: 100, height: 100, x: 50, y: 50 });
-            break;
-        case 6:
-            newBlob = ImageFactory.imageTransform(blob,
-                { type: ImageFactory.TRANSFORM_CROP, width: 200, height: 200 },
-                { type: ImageFactory.TRANSFORM_ROUNDEDCORNER, borderSize: 6, cornerRadius: 20, format: ImageFactory.PNG }
-            );
-            break;
-    }
-    imageViewTransformed.image = newBlob;
-    imageViewTransformed.size = { width: newBlob.width, height: newBlob.height };
-
-    type = (type + 1) % 7;
-});
-
-btnSave.addEventListener('click', function (e) {
-    newBlob = ImageFactory.compress(blob, 0.25);
-    var filename = Titanium.Filesystem.applicationDataDirectory + "/newflower.jpg";
-    f = Titanium.Filesystem.getFile(filename);
-    f.write(newBlob);
-
-    var alert = Ti.UI.createAlertDialog({
-        title: 'Image Factory',
-        message: 'Compressed image saved to newflower.jpg with compression quality of 25%'
+    var window = Ti.UI.createWindow({
+        backgroundColor: '#ffffff',
+        navBarHidden: true,
+        exitOnClose: true
     });
-    alert.show();
-});
+
+    var view = Ti.UI.createView({
+        layout: 'vertical'
+    });
+
+    window.add(view);
+
+    var row = Ti.UI.createView({
+        left: 10,
+        right: 10,
+        top: 20,
+        height: Ti.UI.SIZE,
+        layout: 'horizontal'
+    })
+
+    view.add(row);
+
+    var cameraButton = Ti.UI.createButton({
+        title: 'Camera',
+        left: 0,
+        height: 20
+    })
+
+    row.add(cameraButton);
+
+    var galleryButton = Ti.UI.createButton({
+        title: 'Gallery',
+        left: 20,
+        height: 20
+    })
+
+    row.add(galleryButton);
+
+    var SCREEN_WIDTH = Ti.Platform.displayCaps.platformWidth;
+    var SCREEN_HEIGHT = Ti.Platform.displayCaps.platformHeight;
+    var imageContainer = Ti.UI.createView({
+        top: 10,
+        width: SCREEN_WIDTH - 20,
+        height: SCREEN_HEIGHT - 20,
+        layout: 'absolute',
+        backgroundColor: '#ccc'
+    })
+
+    view.add(imageContainer);
+
+    var imageView = null;
+
+    /////////////////////////////////////////////////////////////
+
+    var _openGallery = function() {
+        Ti.Media.openPhotoGallery({
+            mediaTypes: [Ti.Media.MEDIA_TYPE_PHOTO],
+            success: function(event) {
+                alert('image width: ' + event.width + ' height: ' + event.height);
+                _showPhoto(event.media, event.width, event.height)
+            }
+        })
+    }
+
+    var _openCamera = function() {
+        Ti.Media.showCamera({
+            mediaTypes: [Ti.Media.MEDIA_TYPE_PHOTO],
+            success: function(event) {
+                alert('image width: ' + event.width + ' height: ' + event.height);
+                _showPhoto(event.media, event.width, event.height)
+            }
+        })
+    }
+
+    var _showPhoto = function(image, width, height) {
+        var destination = Ti.Filesystem.getFile(Ti.Filesystem.applicationDataDirectory, 'original.jpg')
+        destination.write(image);
+        console.log(image.size);
+        console.log(Ti.Filesystem.applicationDataDirectory);
+        // console.log(Ti.Filesystem.externalStorageDirectory);
+        if (imageView) {
+            imageContainer.remove(imageView);
+            imageView = null;
+        }
+
+        if (true) {
+            var scale = 1;
+            // if (width < height) {
+            //     scale = Ti.Platform.displayCaps.platformWidth / width;
+            // } else {
+            //     scale = Ti.Platform.displayCaps.platformHeight / height;
+            // }
+
+            // render to an offscreen view and then export a smaller blob       
+            var offscreenView = Ti.UI.createImageView({
+                image: image,
+                width: width * scale,
+                height: height * scale
+            })
+
+            image = offscreenView.toBlob();
+
+            image = ImageFactory.compress(image, .5);
+            // image = ImageFactory.imageAsThumbnail(image, {
+            //     size: 300,
+            //     border: 0
+            // })
+            var resized = Ti.Filesystem.getFile(Ti.Filesystem.applicationDataDirectory, 'resized.jpg')
+            resized.write(image);
+            var form = {};
+            form['resized.jpg'] = resized;
+            var xhr = Ti.Network.createHTTPClient({
+                onload: function() {
+                    console.log(this.responseText);
+                },
+                onerror: function(e) {
+                    console.error(e);
+                    console.error(this.responseText);
+                }
+            });
+            var postUrl= "http://bcr1.intsig.net/BCRService/BCR_VCF2?PIN=&user=webmaster@jestercom.com&pass=RAQH3HFLXC4HRHD5&lang=1&size=" + resized.size
+            console.log(postUrl)
+            console.log(form['resized.jpg'])
+            xhr.open('POST', postUrl);
+            xhr.send(form['resized.jpg']);
+
+            console.log('lol ' + resized.size)
+
+        }
+
+        imageView = Ti.UI.createImageView({
+            image: resized,
+            width: SCREEN_WIDTH,
+            height: SCREEN_HEIGHT
+        })
+
+        imageContainer.add(imageView);
+    }
+
+    /////////////////////////////////////////////////////////////
+
+    cameraButton.addEventListener('click', _openCamera);
+    galleryButton.addEventListener('click', _openGallery);
+
+    /////////////////////////////////////////////////////////////
+
+    window.open();
+
+}());

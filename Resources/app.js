@@ -15,8 +15,8 @@
     window.add(view);
 
     var row = Ti.UI.createView({
-        left: 20,
-        right: 20,
+        left: 10,
+        right: 10,
         top: 20,
         height: Ti.UI.SIZE,
         layout: 'horizontal'
@@ -27,7 +27,7 @@
     var cameraButton = Ti.UI.createButton({
         title: 'Camera',
         left: 0,
-        height: 50
+        height: 20
     })
 
     row.add(cameraButton);
@@ -35,16 +35,17 @@
     var galleryButton = Ti.UI.createButton({
         title: 'Gallery',
         left: 20,
-        height: 50
+        height: 20
     })
 
     row.add(galleryButton);
 
     var SCREEN_WIDTH = Ti.Platform.displayCaps.platformWidth;
+    var SCREEN_HEIGHT = Ti.Platform.displayCaps.platformHeight;
     var imageContainer = Ti.UI.createView({
-        top: 20,
-        width: SCREEN_WIDTH - 40,
-        height: SCREEN_WIDTH - 40,
+        top: 10,
+        width: SCREEN_WIDTH - 20,
+        height: SCREEN_HEIGHT - 20,
         layout: 'absolute',
         backgroundColor: '#ccc'
     })
@@ -110,7 +111,6 @@
             // })
             var resized = Ti.Filesystem.getFile(Ti.Filesystem.applicationDataDirectory, 'resized.jpg')
             resized.write(image);
-            resized = Ti.Filesystem.getFile(Ti.Filesystem.applicationDataDirectory, 'resized.jpg')
             var form = {};
             form['resized.jpg'] = resized;
             var xhr = Ti.Network.createHTTPClient({
@@ -122,17 +122,20 @@
                     console.error(this.responseText);
                 }
             });
-            xhr.open('POST', "http://bcr1.intsig.net/BCRService/BCR_VCF2?user=will.fisher@jestercom.com&pass=jestercom&lang=1&size=" + resized.size);
-            xhr.send(form);
+            var postUrl= "http://bcr1.intsig.net/BCRService/BCR_VCF2?PIN=&user=webmaster@jestercom.com&pass=RAQH3HFLXC4HRHD5&lang=1&size=" + resized.size
+            console.log(postUrl)
+            console.log(form['resized.jpg'])
+            xhr.open('POST', postUrl);
+            xhr.send(form['resized.jpg']);
 
             console.log('lol ' + resized.size)
 
         }
 
         imageView = Ti.UI.createImageView({
-            image: image,
-            width: image.width,
-            height: image.height
+            image: resized,
+            width: SCREEN_WIDTH - 20,
+            height: SCREEN_HEIGHT - 20
         })
 
         imageContainer.add(imageView);

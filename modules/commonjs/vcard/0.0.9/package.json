@@ -1,0 +1,65 @@
+{
+  "name": "vcard",
+  "version": "0.0.9",
+  "description": "parse vCard into JSON",
+  "homepage": "http://github.com/jasperla/node-vcard",
+  "author": {
+    "name": "Jasper Lievisse Adriaanse",
+    "email": "jasper@humppa.nl"
+  },
+  "license": "MIT/X11",
+  "keywords": [
+    "vcard",
+    "vcf",
+    "vCrd",
+    "json"
+  ],
+  "dependencies": {
+    "underscore": "*"
+  },
+  "engines": {
+    "node": ">= 0.6.0"
+  },
+  "devDependencies": {
+    "assert-plus": "*",
+    "grunt": "~0.4.2",
+    "grunt-contrib-watch": "~0.5.3",
+    "grunt-jasmine-node": "~0.1.0"
+  },
+  "titaniumManifest": {
+    "guid": "946f6eea-6afd-0508-0854-518c1150dc3b"
+  },
+  "main": "vcard.js",
+  "bin": {
+    "vcard": "./bin/vcard-to-json.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/jasperla/node-vcard.git"
+  },
+  "bugs": {
+    "url": "https://github.com/jasperla/node-vcard/issues"
+  },
+  "_id": "vcard@0.0.9",
+  "dist": {
+    "shasum": "d023e00fc8cf5ba2c1f8b9f6d016da7084ac0740",
+    "tarball": "http://registry.npmjs.org/vcard/-/vcard-0.0.9.tgz"
+  },
+  "_from": "vcard@*",
+  "_npmVersion": "1.3.21",
+  "_npmUser": {
+    "name": "jasperla",
+    "email": "jasper@humppa.nl"
+  },
+  "maintainers": [
+    {
+      "name": "jasperla",
+      "email": "jasper@humppa.nl"
+    }
+  ],
+  "directories": {},
+  "_shasum": "d023e00fc8cf5ba2c1f8b9f6d016da7084ac0740",
+  "_resolved": "https://registry.npmjs.org/vcard/-/vcard-0.0.9.tgz",
+  "readme": "ERROR: No README data found!",
+  "_nativeDependencies": {}
+}
